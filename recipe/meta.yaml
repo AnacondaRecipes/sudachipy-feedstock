@@ -50,7 +50,7 @@ about:
   description: Python version of Sudachi, the Japanese Morphological Analyzer
   license: Apache-2.0
   license_family: Apache
-  license_url: 'https://github.com/WorksApplications/sudachi.rs/blob/develop/LICENSE
+  license_url: https://github.com/WorksApplications/sudachi.rs/blob/develop/LICENSE
 
 extra:
   recipe-maintainers:
