@@ -10,37 +10,47 @@ source:
   sha256: e4fb026cc367e0dff7d0b8a2fce510e66d5bf7ef4728af76bfe63132b22753cd
 
 build:
+  number: 0
+  # 2023/5/29: On win64 `rust_compiler_rust-gnu` tries to create two artifacts with different hashes in the artifact's filename,
+  # and testing one of them fails but another succeeded.
+  skip: True  # [win64 and (rust_compiler == 'rust-gnu')]
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - sudachipy=sudachipy.command_line:main
-  script: {{ PYTHON }} -m pip install . -vv
-  number: 0
+  missing_dso_whitelist:  # [s390x]
+    - $RPATH/ld64.so.1    # [s390x]
 
 requirements:
+  build:
+    - {{ compiler('rust') }}
   host:
+    - pip
     - python
     - setuptools
-    - wheel
     - setuptools-rust
-    - pip
-    - setuptools
     - wheel
   run:
     - python
+    - {{ pin_compatible("libgcc-ng", max_pin=None) }} # [linux]
 
 test:
   imports:
     - sudachipy
+  requires:
+    - pip
   commands:
     - pip check
     - sudachipy --help
-  requires:
-    - pip
 
 about:
   home: https://github.com/WorksApplications/sudachi.rs/tree/develop/python
+  dev_url: https://github.com/WorksApplications/sudachi.rs/tree/develop/python
+  doc_url: https://github.com/WorksApplications/sudachi.rs/tree/develop/python
   summary: Python version of Sudachi, the Japanese Morphological Analyzer
+  description: Python version of Sudachi, the Japanese Morphological Analyzer
   license: Apache-2.0
-  license_file: PLEASE_ADD_LICENSE_FILE
+  license_family: Apache
+  license_url: https://github.com/WorksApplications/sudachi.rs/blob/develop/LICENSE
 
 extra:
   recipe-maintainers:
