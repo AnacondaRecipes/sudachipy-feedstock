@@ -16,6 +16,8 @@ build:
     - sudachipy=sudachipy.command_line:main
 
 requirements:
+  build:
+    - {{ compiler('rust') }}
   host:
     - pip
     - python
