@@ -10,7 +10,7 @@ source:
   sha256: e4fb026cc367e0dff7d0b8a2fce510e66d5bf7ef4728af76bfe63132b22753cd
 
 build:
-  number: 0
+  number: 1
   # 2023/5/29: On win64 `rust_compiler_rust-gnu` tries to create two artifacts with different hashes in the artifact's filename,
   # and testing one of them fails but another succeeded.
   skip: True  # [win64 and (rust_compiler == 'rust-gnu')]
