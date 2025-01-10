@@ -1,5 +1,5 @@
 {% set name = "sudachipy" %}
-{% set version = "0.6.7" %}
+{% set version = "0.6.10" %}
 
 package:
   name: {{ name|lower }}
@@ -7,10 +7,10 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/SudachiPy-{{ version }}.tar.gz
-  sha256: e4fb026cc367e0dff7d0b8a2fce510e66d5bf7ef4728af76bfe63132b22753cd
+  sha256: b8910a4610de98b2c3cb6dc3362fea93e3ba5059f1eb445a68baa9585278f31b
 
 build:
-  number: 2
+  number: 0
   # 2023/5/29: On win64 `rust_compiler_rust-gnu` tries to create two artifacts with different hashes in the artifact's filename,
   # and testing one of them fails but another succeeded.
   skip: True  # [win64 and (rust_compiler == 'rust-gnu')]
@@ -27,8 +27,8 @@ requirements:
     - pip
     - python
     - setuptools
-    - setuptools-rust
     - wheel
+    - setuptools-rust
   run:
     - python
     - {{ pin_compatible("libgcc-ng", max_pin=None) }} # [linux]
