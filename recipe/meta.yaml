@@ -50,6 +50,7 @@ about:
   doc_url: https://github.com/WorksApplications/sudachi.rs/tree/develop/python
   summary: Python version of Sudachi, the Japanese Morphological Analyzer
   description: Python version of Sudachi, the Japanese Morphological Analyzer
+  license: Apache-2.0
   license_file:
     - LICENSE
     - THIRDPARTY.yml
