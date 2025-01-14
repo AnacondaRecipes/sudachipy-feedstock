@@ -6,15 +6,15 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/SudachiPy-{{ version }}.tar.gz
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/sudachipy-{{ version }}.tar.gz
   sha256: b8910a4610de98b2c3cb6dc3362fea93e3ba5059f1eb445a68baa9585278f31b
 
 build:
   number: 0
-  # 2023/5/29: On win64 `rust_compiler_rust-gnu` tries to create two artifacts with different hashes in the artifact's filename,
-  # and testing one of them fails but another succeeded.
-  skip: True  # [win64 and (rust_compiler == 'rust-gnu')]
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script: 
+    - curl -O https://github.com/WorksApplications/sudachi.rs/blob/v{{ version }}/LICENSE
+    - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - sudachipy=sudachipy.command_line:main
   missing_dso_whitelist:  # [s390x]
@@ -22,7 +22,10 @@ build:
 
 requirements:
   build:
+    - {{ compiler("c") }}
     - {{ compiler('rust') }}
+    - cargo-bundle-licenses
+    - curl
   host:
     - pip
     - python
@@ -31,7 +34,6 @@ requirements:
     - setuptools-rust
   run:
     - python
-    - {{ pin_compatible("libgcc-ng", max_pin=None) }} # [linux]
 
 test:
   imports:
@@ -48,9 +50,10 @@ about:
   doc_url: https://github.com/WorksApplications/sudachi.rs/tree/develop/python
   summary: Python version of Sudachi, the Japanese Morphological Analyzer
   description: Python version of Sudachi, the Japanese Morphological Analyzer
-  license: Apache-2.0
+  license_file:
+    - LICENSE
+    - THIRDPARTY.yml
   license_family: Apache
-  license_url: https://github.com/WorksApplications/sudachi.rs/blob/develop/LICENSE
 
 extra:
   recipe-maintainers:
