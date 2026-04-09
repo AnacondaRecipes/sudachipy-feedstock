@@ -10,18 +10,18 @@ source:
   sha256: b8910a4610de98b2c3cb6dc3362fea93e3ba5059f1eb445a68baa9585278f31b
 
 build:
-  number: 0
-  script: 
+  number: 1
+  script:
+    - export PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
     - curl -O https://github.com/WorksApplications/sudachi.rs/blob/v{{ version }}/LICENSE
     - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - sudachipy=sudachipy.command_line:main
-  missing_dso_whitelist:  # [s390x]
-    - $RPATH/ld64.so.1    # [s390x]
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler("c") }}
     - {{ compiler('rust') }}
     - cargo-bundle-licenses
